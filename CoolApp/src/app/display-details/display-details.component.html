@@ -1,0 +1,14 @@
+<div class="container">
+  <button class="btn btn-primary" (click)="OnDisplayClick()">Display Details</button>
+
+  <p *ngIf="display">
+    Date: 2018-06-30T15:46:02.777Z - Hash: eb40b140fdb1b4d77dcd - Time: 211ms
+  </p>
+  <ul>
+    <li
+     [ngStyle]="{backgroundColor: IsBlue(i)}"
+      *ngFor="let timespam of TimeStamps; let i = index"
+  [ngClass]="{'white-text': i>=4}"
+      >{{timespam + i}}</li>
+  </ul>
+</div>
