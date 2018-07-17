@@ -1,25 +1,40 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import {appRoutes} from './routes';
 
-import { AppComponent } from './app.component';
-import { EventsListComponent } from './events-list/events-list.component';
-import { EventThumbnailComponent } from './events-list/event-thumbnail/event-thumbnail.component';
-import {NavComponent} from './nav/nav.component';
-import {EventService} from './shared/events.service';
-import {ToastrService} from './shared/toastr.service';
-
+import {
+  AppComponent,EventsListComponent,EventThumbnailComponent,NavComponent,
+EventService,ToastrService,EventDetailsComponent,CreateEventComponent,Error404Component,
+EventRouteActivator,EventsListResolver
+} from './index'
 
 @NgModule({
   declarations: [
     AppComponent,
     EventsListComponent,
     EventThumbnailComponent,
-    NavComponent
+    NavComponent,
+    EventDetailsComponent,
+    CreateEventComponent,
+    Error404Component
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(appRoutes)
   ],
-  providers: [EventService,ToastrService],
+  providers: [
+    EventService,
+    ToastrService,
+     EventRouteActivator,
+     EventsListResolver,
+     {provide:'canDeactivateCreateEvent', useValue:checkDirtyState}
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+export function checkDirtyState(component:CreateEventComponent) {
+  if(component.isDirty)
+    return window.confirm('You have not save the event yet. Do you really want to cancel?');
+  return true
+}
